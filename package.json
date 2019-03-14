@@ -1,0 +1,29 @@
+{
+  "name": "books-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sabriele/books-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sabriele/books-lab/issues"
+  },
+  "homepage": "https://github.com/sabriele/books-lab#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "jest": "^24.5.0",
+    "nodemon": "^1.18.10",
+    "supertest": "^4.0.0"
+  }
+}
