@@ -19,7 +19,15 @@ const verifyToken = (req, res, next) => {
 router
   .route("/")
   .get((req, res) => {
-    res.json(books);
+    const queries = Object.entries(req.query);
+
+    let filteredBooks = books;
+    queries.forEach(([key, value]) => {
+      filteredBooks = filteredBooks.filter(book =>
+        book[key].toLowerCase().includes(value.toLowerCase())
+      );
+    });
+    res.json(filteredBooks);
   })
   .post(verifyToken, (req, res) => {
     const book = req.body;
