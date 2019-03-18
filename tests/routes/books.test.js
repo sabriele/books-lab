@@ -15,7 +15,7 @@ describe("Books", () => {
       });
   });
 
-  test("deny access with incorrect authorization token", () => {
+  test("should deny access with incorrect authorization token", () => {
     return request(app)
       .post(route)
       .set("Authorization", "Bearer some-invalid-token")
@@ -51,7 +51,8 @@ describe("Books", () => {
     const queryField = "title";
     const query = "Fairy tales";
     return request(app)
-      .get(`${route}?${queryField}=${query}`)
+      .get(`${route}`)
+      .query({ [queryField]: `${query}` })
       .expect(books.filter(book => book.title === "Fairy tales"))
       .expect(200);
   });
@@ -92,9 +93,18 @@ describe("Books", () => {
   });
 
   test("should delete a book entry", () => {
+    const id = "5c8b1062e2199d13c1c87746";
     return request(app)
-      .delete(`${route}/123`)
+      .delete(`${route}/${id}`)
       .set("Authorization", "Bearer my-bearer-token")
       .expect(202);
+  });
+
+  test("should fail when there is no such book to delete", done => {
+    const id = "100";
+    request(app)
+      .delete(`${route}/${id}`)
+      .set("Authorization", "Bearer my-bearer-token")
+      .expect(400, done);
   });
 });

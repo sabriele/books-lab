@@ -5,14 +5,10 @@ const books = require("../booklist");
 
 const verifyToken = (req, res, next) => {
   const { authorization } = req.headers;
-  if (!authorization) {
-    res.sendStatus(403);
-  } else {
-    if (authorization === "Bearer my-bearer-token") {
-      next();
-    } else {
-      res.sendStatus(403);
-    }
+  if (!authorization) res.sendStatus(403);
+  else {
+    if (authorization === "Bearer my-bearer-token") next();
+    else res.sendStatus(403);
   }
 };
 
@@ -20,7 +16,6 @@ router
   .route("/")
   .get((req, res) => {
     const queries = Object.entries(req.query);
-
     let filteredBooks = books;
     queries.forEach(([key, value]) => {
       filteredBooks = filteredBooks.filter(book =>
@@ -37,6 +32,9 @@ router
 
 router
   .route("/:id")
+  .get((req, res) => {
+    res.json(books);
+  })
   .put(verifyToken, (req, res) => {
     res.status(202).json(req.body);
   })
@@ -44,7 +42,8 @@ router
     res.status(202).json(req.body);
   })
   .delete(verifyToken, (req, res) => {
-    res.status(202).json();
+    const book = books.find(book => book.id === req.params.id);
+    book ? res.sendStatus(202) : res.sendStatus(400);
   });
 
 module.exports = router;
