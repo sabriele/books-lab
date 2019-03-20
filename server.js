@@ -1,11 +1,16 @@
 /* eslint-disable no-console */
 const app = require("./app");
-const port = process.env.PORT || 8080;
-const isInProduction = process.env.NODE_ENV === "production";
-
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/bookstore", { useNewUrlParser: true });
 
+const isInProduction = process.env.NODE_ENV === "production";
+const notInProduction = process.env.NODE_ENV !== "production";
+
+if (notInProduction) require("dotenv").config();
+
+const port = process.env.PORT;
+const mongodbUri = process.env.MONGODB_URI;
+
+mongoose.connect(mongodbUri, { useNewUrlParser: true });
 const db = mongoose.connection;
 
 db.on("error", err => {
